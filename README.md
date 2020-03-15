@@ -1,6 +1,28 @@
 # django-beanstalk-worker
 An app for handling deferred and periodic tasks on beanstalk worker machines
 
+<!-- MarkdownTOC autolink="true" -->
+
+- [Overview](#overview)
+- [Installation and Setup](#installation-and-setup)
+	- [1: Installed Apps](#1-installed-apps)
+	- [2: Environment Variables](#2-environment-variables)
+	- [3: Django Settings](#3-django-settings)
+	- [4: URLs's](#4-urlss)
+	- [5: Beanstalk Worker Configuration](#5-beanstalk-worker-configuration)
+- [Use](#use)
+	- [Declare a task function](#declare-a-task-function)
+	- [Call the task from anywhere in your code](#call-the-task-from-anywhere-in-your-code)
+	- [Call the task from CRON](#call-the-task-from-cron)
+	- [Call the task from the command line](#call-the-task-from-the-command-line)
+- [Development, Testing and the FakeTaskServer](#development-testing-and-the-faketaskserver)
+	- [settings.DEBUG](#settingsdebug)
+	- [Test support](#test-support)
+	- [settings.BEANSTALK_WORKER](#settingsbeanstalk_worker)
+
+<!-- /MarkdownTOC -->
+
+
 ## Overview
 The core of this app is the task decorator.
 
