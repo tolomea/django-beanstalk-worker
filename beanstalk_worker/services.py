@@ -87,13 +87,13 @@ class FakeTaskService(_TaskServiceBase):
             self.run_task(self.queue.pop(0))
 
     def run_task(self, body):
-        with mock.patch("django.conf.settings.WORKER", True):
+        with mock.patch("django.conf.settings.BEANSTALK_WORKER", True):
             return super().run_task(body)
 
 
 class TaskService(_TaskServiceBase):
     def _enqueue(self, body):
-        sqs = boto3.client("sqs", region_name=settings.AWS_SES_REGION_NAME)
+        sqs = boto3.client("sqs", region_name=settings.BEANSTALK_SQS_REGION)
         sqs.send_message(
-            QueueUrl=settings.QUEUE_URL, MessageAttributes={}, MessageBody=body
+            QueueUrl=settings.BEANSTALK_SQS_URL, MessageAttributes={}, MessageBody=body
         )
