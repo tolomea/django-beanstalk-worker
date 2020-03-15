@@ -38,6 +38,9 @@ In your top level URL's add
 if settings.BEANSTALK_WORKER:
     urlpatterns.append(url(r"^tasks/", include("beanstalk_worker.urls")))
 ```
+
+This will add the URLS `/tasks/task/` and `/tasks/cron`. You can move the base of these URL's if you do so other instructions on this page will need updating appropriately.
+
 DO NOT include these URL's in a production web server, only the worker.
 
 For test and development you won't have seperate web and worker machines so always include the URL's.
@@ -78,9 +81,21 @@ Arguments are not currently supported for cron.
 
 ### Call the task from the command line
 
-```
-./manage.py run_task my_project.my_app.tasks task ["hello world"]
+```console
+./manage.py run_task my_project.my_app.tasks task "['hello world']"
 ```
 `my_project.my_app.tasks my_task` should be replaced with the fully qualified name of your task function, also note the space between module name and function name.
 
 
+## Development, Testing and the FakeTaskServer
+
+The FakeTaskServer will internally queue tasks but will not run them unless instructed to.
+
+### settings.DEBUG
+When `DEBUG = True` is set in the Django settings an additional URL is exposed at `/tasks/run_all/` if you poke this URL the `FakeTaskService` will run all queued tasks. This can be handy for local development.
+
+### Test support
+In tests you can acquire the running task service instance with `from beanstalk_worker import task_service`. This class has two helpers `clear` whcih will discard all queued tasks and `run_all` which will immediately run all queued tasks.
+
+### settings.BEANSTALK_WORKER
+While running a task the FakeTaskServer will patch `settings.BEANSTALK_WORKER` to `True`. This lets you `assert settings.BEANSTALK_WORKER` in code that should only ever be run on a worker.
