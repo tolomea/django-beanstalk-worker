@@ -9,9 +9,6 @@ import dateparser
 from django.conf import settings
 from django.db import connection
 
-from common.utils import D2
-
-
 def json_dump(obj):
     if isinstance(obj, datetime):
         return {"__type__": "datetime", "value": obj.isoformat()}
@@ -26,7 +23,7 @@ def json_load(obj):
         if obj["__type__"] == "datetime":
             return dateparser.parse(obj["value"])
         elif obj["__type__"] == "decimal":
-            return D2(obj["value"])
+            return decimal.Decimal(obj["value"])
         else:
             assert False
     else:
