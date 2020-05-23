@@ -9,6 +9,7 @@ import dateparser
 from django.conf import settings
 from django.db import connection
 
+
 def json_dump(obj):
     if isinstance(obj, datetime):
         return {"__type__": "datetime", "value": obj.isoformat()}
@@ -33,12 +34,7 @@ def json_load(obj):
 class _TaskServiceBase:
     def run_task(self, body):
         data = json.loads(body, object_hook=json_load)
-        if data.keys() == {"module", "method", "args", "kwargs"}:
-            self.run(data["module"], data["method"], data["args"], data["kwargs"])
-        else:
-            from comms import notifications
-
-            notifications.receive(data)
+        self.run(data["module"], data["method"], data["args"], data["kwargs"])
 
     def run(self, module_name, method_name, args, kwargs):
         """ run a task, called by the view that receives them from the queue """

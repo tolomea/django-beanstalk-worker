@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="django-beanstalk-worker",
-    version="0.0.1",
+    version="0.0.2",
     author="Gordon Wrigley",
     author_email="gordon.wrigley@gmail.com",
     description="A service for handling deferred and periodic tasks on beanstalk worker machines",
